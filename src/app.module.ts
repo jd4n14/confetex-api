@@ -1,14 +1,33 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { UserModule } from './modules/user/user.module';
+import { UserModule } from './modules/users/user.module';
 import { MachineModule } from './modules/machine/machine.module';
 import { RequestModule } from './modules/request/request.module';
 import { LogModule } from './modules/log/log.module';
+import { LinesModule } from './modules/lines/lines.module';
+import { SettingsModule } from './modules/settings/settings.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { ConfigModule } from '@nestjs/config';
+import { MikroOrmOptions } from './config/mikro-orm.config';
+import config from './config';
 
 @Module({
-  imports: [UserModule, MachineModule, RequestModule, LogModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({
+      load: [config],
+      isGlobal: true,
+    }),
+    MikroOrmModule.forRootAsync({
+      useClass: MikroOrmOptions,
+      inject: [ConfigModule],
+    }),
+    AuthModule,
+    UserModule,
+    MachineModule,
+    RequestModule,
+    LogModule,
+    LinesModule,
+    SettingsModule,
+  ],
 })
 export class AppModule {}
