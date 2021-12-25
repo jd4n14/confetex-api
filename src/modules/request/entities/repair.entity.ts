@@ -16,9 +16,9 @@ export class Repair {
   @OneToOne()
   request: Request;
 
-  @Property()
+  @Property({ type: Date, nullable: true })
   arrivedAt: Date;
 
-  @Property()
+  @Property({ type: Date, nullable: true })
   readyAt: Date;
 }

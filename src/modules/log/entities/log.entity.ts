@@ -1,4 +1,10 @@
-import { Entity, ManyToOne, OneToOne, PrimaryKey } from '@mikro-orm/core';
+import {
+  Entity,
+  ManyToOne,
+  OneToOne,
+  PrimaryKey,
+  Property,
+} from '@mikro-orm/core';
 import { User } from '../../users/entities/user.entity';
 import { ProductionLine } from '../../lines/entities/line.entity';
 
@@ -12,4 +18,9 @@ export class Log {
 
   @OneToOne()
   mechanic: User;
+
+  @Property({ persist: false })
+  name() {
+    return `Bitacora ${this.id}`;
+  }
 }

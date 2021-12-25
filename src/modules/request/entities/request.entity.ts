@@ -29,6 +29,6 @@ export class Request {
   @OneToOne()
   supervisor: User;
 
-  @Property()
+  @Property({ type: Date, nullable: true, defaultRaw: 'now()' })
   createdAt: Date;
 }
