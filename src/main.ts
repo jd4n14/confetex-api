@@ -12,7 +12,7 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter(),
   );
-
+  app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()

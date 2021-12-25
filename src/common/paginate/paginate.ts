@@ -1,39 +1,39 @@
-import { PaginateQuery } from './paginate.decorator'
-import { ServiceUnavailableException } from '@nestjs/common'
-import { EntityRepository, FilterQuery } from '@mikro-orm/core'
+import { PaginateQuery } from './paginate.decorator';
+import { ServiceUnavailableException } from '@nestjs/common';
+import { EntityRepository, FilterQuery } from '@mikro-orm/core';
 
-type Column<T> = Extract<keyof T, string>
-type Order<T> = [Column<T>, 'ASC' | 'DESC']
-type SortBy<T> = Order<T>[]
+type Column<T> = Extract<keyof T, string>;
+type Order<T> = [Column<T>, 'ASC' | 'DESC'];
+type SortBy<T> = Order<T>[];
 
 export class Paginated<T> {
-  data: [T] | T[]
+  data: [T] | T[];
   meta: {
-    itemsPerPage: number
-    totalItems: number
-    currentPage: number
-    totalPages: number
-    sortBy: SortBy<T>
-    search: string
-    filter?: { [column: string]: string | string[] }
-  }
+    itemsPerPage: number;
+    totalItems: number;
+    currentPage: number;
+    totalPages: number;
+    sortBy: SortBy<T>;
+    search: string;
+    filter?: { [column: string]: string | string[] };
+  };
   links: {
-    first?: string
-    previous?: string
-    current: string
-    next?: string
-    last?: string
-  }
+    first?: string;
+    previous?: string;
+    current: string;
+    next?: string;
+    last?: string;
+  };
 }
 
 export interface PaginateConfig<T> {
-  sortableColumns: Column<T>[]
-  searchableColumns?: Column<T>[]
-  maxLimit?: number
-  defaultSortBy?: SortBy<T>
-  defaultLimit?: number
-  where?: FilterQuery<T>
-  filterableColumns?: { [key in Column<T>]?: FilterOperator[] }
+  sortableColumns: Column<T>[];
+  searchableColumns?: Column<T>[];
+  maxLimit?: number;
+  defaultSortBy?: SortBy<T>;
+  defaultLimit?: number;
+  where?: FilterQuery<T>;
+  filterableColumns?: { [key in Column<T>]?: FilterOperator[] };
 }
 
 export enum FilterOperator {
@@ -55,48 +55,49 @@ export async function paginate<T>(
 ): Promise<Paginated<T>> {
   // Get current page from query
   // And calculate limit of items
-  let page = query.page || 1
+  let page = query.page || 1;
   const limit = Math.min(
     query.limit || config.defaultLimit || 20,
     config.maxLimit || 100,
-  )
-  const sortBy = [] as SortBy<T>
-  const path = query.path
+  );
+  const sortBy = [] as SortBy<T>;
+  const path = query.path;
 
   function isEntityKey(
     sortableColumns: Column<T>[],
     column: string,
   ): column is Column<T> {
-    return !!sortableColumns.find(c => c === column)
+    return !!sortableColumns.find((c) => c === column);
   }
 
-  const { sortableColumns } = config
-  if (config.sortableColumns.length < 1) throw new ServiceUnavailableException()
+  const { sortableColumns } = config;
+  if (config.sortableColumns.length < 1)
+    throw new ServiceUnavailableException();
 
-  query.sortBy?.forEach(order => {
+  query.sortBy?.forEach((order) => {
     if (
       isEntityKey(sortableColumns, order[0]) &&
       ['ASC', 'DESC'].includes(order[1])
     ) {
-      sortBy.push(order as Order<T>)
+      sortBy.push(order as Order<T>);
     }
-  })
+  });
 
   if (!sortBy.length) {
-    sortBy.push(...(config.defaultSortBy || [[sortableColumns[0], 'ASC']]))
+    sortBy.push(...(config.defaultSortBy || [[sortableColumns[0], 'ASC']]));
   }
 
-  if (page < 1) page = 1
+  if (page < 1) page = 1;
 
-  const $or = []
+  const $or = [];
   if (query.search && config.searchableColumns) {
-    config.searchableColumns.forEach(column => {
+    config.searchableColumns.forEach((column) => {
       $or.push({
         [column]: {
           $like: `%${query.search}%`,
         },
-      })
-    })
+      });
+    });
   }
   const [items, totalItems] = await repo.findAndCount(
     { $or } as FilterQuery<T>,
@@ -104,16 +105,18 @@ export async function paginate<T>(
       limit,
       offset: (page - 1) * limit,
     },
-  )
-  let totalPages = totalItems / limit
-  if (totalItems % limit) totalPages = Math.ceil(totalPages)
+  );
+  let totalPages = totalItems / limit;
+  if (totalItems % limit) totalPages = Math.ceil(totalPages);
 
-  const sortByQuery = sortBy.map(order => `&sortBy=${order.join(':')}`).join('')
-  const searchQuery = query.search ? `&search=${query.search}` : ''
-  const filterQuery = ''
+  const sortByQuery = sortBy
+    .map((order) => `&sortBy=${order.join(':')}`)
+    .join('');
+  const searchQuery = query.search ? `&search=${query.search}` : '';
+  const filterQuery = '';
 
-  const options = `&limit=${limit}${sortByQuery}${searchQuery}${filterQuery}`
-  const buildLink = (p: number): string => path + '?page=' + p + options
+  const options = `&limit=${limit}${sortByQuery}${searchQuery}${filterQuery}`;
+  const buildLink = (p: number): string => path + '?page=' + p + options;
 
   const results: Paginated<T> = {
     data: items,
@@ -133,7 +136,6 @@ export async function paginate<T>(
       next: page + 1 > totalPages ? undefined : buildLink(page + 1),
       last: page == totalPages ? undefined : buildLink(totalPages),
     },
-  }
-  console.log({ page })
-  return Object.assign(new Paginated<T>(), results)
+  };
+  return Object.assign(new Paginated<T>(), results);
 }
