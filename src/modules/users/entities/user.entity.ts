@@ -8,7 +8,7 @@ import {
 } from '@mikro-orm/core';
 import { Exclude } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
-import { ProductionLine } from '../../lines/entities/line.entity';
+import { Line } from '../../lines/entities/line.entity';
 
 export enum Role {
   ADMIN = 'ADMIN',
@@ -45,5 +45,5 @@ export class User {
   role: Role;
 
   @ManyToOne()
-  productionLine: ProductionLine;
+  productionLine: Line;
 }

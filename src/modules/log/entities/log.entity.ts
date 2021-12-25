@@ -5,8 +5,8 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
+import { Line } from '../../lines/entities/line.entity';
 import { User } from '../../users/entities/user.entity';
-import { ProductionLine } from '../../lines/entities/line.entity';
 
 @Entity()
 export class Log {
@@ -14,7 +14,7 @@ export class Log {
   id: number;
 
   @ManyToOne()
-  line: ProductionLine;
+  line: Line;
 
   @OneToOne()
   mechanic: User;

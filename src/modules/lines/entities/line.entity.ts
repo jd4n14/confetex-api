@@ -1,7 +1,7 @@
 import { Entity, PrimaryKey } from '@mikro-orm/core';
 
-@Entity({ tableName: 'production_line' })
-export class ProductionLine {
+@Entity()
+export class Line {
   @PrimaryKey()
   id: number;
 }
