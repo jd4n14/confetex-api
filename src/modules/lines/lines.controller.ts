@@ -1,8 +1,10 @@
 import { Controller, Delete, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { Line } from './entities/line.entity';
 import { LinesService } from './lines.service';
 
 @Controller('lines')
+@ApiTags('Lines')
 export class LinesController {
   constructor(private readonly lineService: LinesService) {}
 
