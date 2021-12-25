@@ -41,7 +41,7 @@ export class User {
     return bcrypt.compare(password, this.password);
   }
 
-  @Enum({ type: () => Role, default: Role.MECHANIC })
+  @Enum()
   role: Role;
 
   @ManyToOne()
