@@ -56,29 +56,19 @@ export async function paginate<T>(
   // Get current page from query
   // And calculate limit of items
   let page = query.page || 1;
-  const limit = Math.min(
-    query.limit || config.defaultLimit || 20,
-    config.maxLimit || 100,
-  );
+  const limit = Math.min(query.limit || config.defaultLimit || 20, config.maxLimit || 100);
   const sortBy = [] as SortBy<T>;
   const path = query.path;
 
-  function isEntityKey(
-    sortableColumns: Column<T>[],
-    column: string,
-  ): column is Column<T> {
+  function isEntityKey(sortableColumns: Column<T>[], column: string): column is Column<T> {
     return !!sortableColumns.find((c) => c === column);
   }
 
   const { sortableColumns } = config;
-  if (config.sortableColumns.length < 1)
-    throw new ServiceUnavailableException();
+  if (config.sortableColumns.length < 1) throw new ServiceUnavailableException();
 
   query.sortBy?.forEach((order) => {
-    if (
-      isEntityKey(sortableColumns, order[0]) &&
-      ['ASC', 'DESC'].includes(order[1])
-    ) {
+    if (isEntityKey(sortableColumns, order[0]) && ['ASC', 'DESC'].includes(order[1])) {
       sortBy.push(order as Order<T>);
     }
   });
@@ -99,19 +89,14 @@ export async function paginate<T>(
       });
     });
   }
-  const [items, totalItems] = await repo.findAndCount(
-    { $or } as FilterQuery<T>,
-    {
-      limit,
-      offset: (page - 1) * limit,
-    },
-  );
+  const [items, totalItems] = await repo.findAndCount({ $or, ...(where as any) } as FilterQuery<T>, {
+    limit,
+    offset: (page - 1) * limit,
+  });
   let totalPages = totalItems / limit;
   if (totalItems % limit) totalPages = Math.ceil(totalPages);
 
-  const sortByQuery = sortBy
-    .map((order) => `&sortBy=${order.join(':')}`)
-    .join('');
+  const sortByQuery = sortBy.map((order) => `&sortBy=${order.join(':')}`).join('');
   const searchQuery = query.search ? `&search=${query.search}` : '';
   const filterQuery = '';
 

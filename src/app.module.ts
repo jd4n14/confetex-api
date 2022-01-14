@@ -9,6 +9,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { ConfigModule } from '@nestjs/config';
 import { MikroOrmOptions } from './config/mikro-orm.config';
+import { DatabaseModule } from './database/database.module';
 import config from './config';
 
 @Module({
@@ -28,6 +29,7 @@ import config from './config';
     LogModule,
     LinesModule,
     SettingsModule,
+    DatabaseModule,
   ],
 })
 export class AppModule {}

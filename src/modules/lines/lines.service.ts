@@ -1,26 +1,30 @@
-import { EntityManager } from '@mikro-orm/mariadb';
+import { EntityRepository } from '@mikro-orm/mariadb';
+import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import { Line } from './entities/line.entity';
 
 @Injectable()
 export class LinesService {
-  constructor(private readonly em: EntityManager) {}
+  constructor(
+    @InjectRepository(Line)
+    private readonly lineRepository: EntityRepository<Line>,
+  ) {}
 
   async findOne(id: number): Promise<Line> {
-    return this.em.findOneOrFail(Line, { id });
+    return this.lineRepository.findOneOrFail({ id });
   }
 
   async getAll(): Promise<Line[]> {
-    return this.em.find(Line, {});
+    return this.lineRepository.find({});
   }
 
   async create(): Promise<Line> {
-    const line = this.em.create(Line, {});
-    this.em.persistAndFlush(line);
+    const line = this.lineRepository.create({});
+    this.lineRepository.persistAndFlush(line);
     return line;
   }
 
   async delete(line: Line): Promise<void> {
-    await this.em.nativeDelete(Line, line);
+    await this.lineRepository.nativeDelete(line);
   }
 }

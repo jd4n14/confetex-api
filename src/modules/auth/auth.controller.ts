@@ -11,7 +11,8 @@ import { RegisterUser } from './dto/register.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
   /**
-   * Login with a user
+   * Login with an email and password
+   * @returns a new created token
    */
   @Post('login')
   async login(@Body() user: Login): Promise<string> {
@@ -27,10 +28,5 @@ export class AuthController {
   @UseGuards(AuthGuard('jwt'))
   public async whoami(@Req() req: any): Promise<User> {
     return req.user;
-  }
-
-  @Post('register')
-  async register(@Body() user: RegisterUser):Promise<User> {
-    return this.authService.register(user)
   }
 }

@@ -1,8 +1,8 @@
 import { Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { ApiPaginatedResponse } from '../../common/paginate/api-paginated';
-import { Paginated } from '../../common/paginate/paginate';
-import { Paginate, PaginateQuery } from '../../common/paginate/paginate.decorator';
+import { ApiPaginatedResponse } from '@common/paginate/api-paginated';
+import { Paginated } from '@common/paginate/paginate';
+import { Paginate, PaginateQuery } from '@common/paginate/paginate.decorator';
 import { Machine } from './entities/machine.entity';
 import { MachineService } from './machine.service';
 import { CreateMachine, UpdateMachine } from './dto/create-machine.dto';

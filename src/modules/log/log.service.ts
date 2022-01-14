@@ -1,7 +1,5 @@
 import { EntityManager } from '@mikro-orm/mariadb';
 import { Injectable } from '@nestjs/common';
-import { paginate, Paginated } from 'src/common/paginate/paginate';
-import { PaginateQuery } from '../../common/paginate/paginate.decorator';
 import { User } from '../users/entities/user.entity';
 import { CreateLog } from './dto/create-log.dto';
 import { Log } from './entities/log.entity';
@@ -14,16 +12,12 @@ export class LogService {
     return this.em.findOneOrFail(Log, { id });
   }
 
-  async findAll(query: PaginateQuery): Promise<Paginated<Log>> {
-    return paginate(query, this.em.getRepository(Log), {
-      sortableColumns: ['id', 'line', 'mechanic'],
-      searchableColumns: ['id', 'line', 'mechanic'],
-      defaultSortBy: [['id', 'DESC']],
-    });
+  async findAll(): Promise<Log[]> {
+    return this.em.find(Log, {}, { populate: ['mechanic', 'line'] });
   }
 
-  async changeMechanic(log: Log, mechanic: User): Promise<Log> {
-    log.mechanic = mechanic;
+  async changeMechanic(log: Log, mechanic: number): Promise<Log> {
+    log.mechanic = this.em.getReference(User, mechanic);
     await this.em.persistAndFlush(log);
     return log;
   }
@@ -32,7 +26,7 @@ export class LogService {
     await this.em.nativeDelete(Log, log);
   }
 
-  async add(newLog: CreateLog): Promise<Log> {
+  async create(newLog: CreateLog): Promise<Log> {
     const log = this.em.create(Log, {});
     log.mechanic = this.em.getReference(User, newLog.mechanic);
 

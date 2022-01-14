@@ -1,13 +1,9 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
-import {
-  MikroOrmModuleOptions,
-  MikroOrmOptionsFactory,
-} from '@mikro-orm/nestjs';
+import { MikroOrmModuleOptions, MikroOrmOptionsFactory } from '@mikro-orm/nestjs';
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
 import { ConfigService } from '@nestjs/config';
 // import * as migrations from '../../database/migrations/index';
-import { MigrationObject } from '@mikro-orm/core';
 
 @Injectable()
 export class MikroOrmOptions implements MikroOrmOptionsFactory {
@@ -31,9 +27,7 @@ export class MikroOrmOptions implements MikroOrmOptionsFactory {
       debug: true,
       logger: logger.log.bind(logger),
       findOneOrFailHandler: (entityName, values) => {
-        throw new NotFoundException(
-          `The resource you are loking in ${entityName} does not exist`,
-        );
+        throw new NotFoundException(`The resource you are loking in ${entityName} does not exist`);
       },
       discovery: {
         warnWhenNoEntities: false,
