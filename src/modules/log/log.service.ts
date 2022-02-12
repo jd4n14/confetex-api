@@ -27,7 +27,7 @@ export class LogService {
   }
 
   async create(newLog: CreateLog): Promise<Log> {
-    const log = this.em.create(Log, {});
+    const log = this.em.create(Log, {} as any);
     log.mechanic = this.em.getReference(User, newLog.mechanic);
 
     await this.em.persistAndFlush(log);

@@ -20,8 +20,8 @@ export class LinesController {
 
   @Delete('/:line')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async delete(@Param() lineId: number): Promise<void> {
-    const line = await this.lineService.findOne(lineId);
+  async delete(@Param('line') id: number): Promise<void> {
+    const line = await this.lineService.findOne(id);
     await this.lineService.delete(line);
   }
 }

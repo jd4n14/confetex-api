@@ -17,7 +17,7 @@ export class UsersService {
   }
 
   async create(registerUser: RegisterUser) {
-    const user = this.em.create(User, registerUser);
+    const user = this.em.create(User, registerUser as any);
     await this.em.persistAndFlush(user);
     return user;
   }
