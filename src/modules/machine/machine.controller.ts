@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ApiPaginatedResponse } from '@common/paginate/api-paginated';
 import { Paginated } from '@common/paginate/paginate';
@@ -19,7 +19,7 @@ export class MachineController {
   }
 
   @Post()
-  async create(machine: CreateMachine): Promise<Machine> {
+  async create(@Body() machine: CreateMachine): Promise<Machine> {
     return this.machineService.create(machine);
   }
 
