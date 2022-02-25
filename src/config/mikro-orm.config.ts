@@ -11,6 +11,7 @@ export class MikroOrmOptions implements MikroOrmOptionsFactory {
 
   createMikroOrmOptions(): MikroOrmModuleOptions {
     const logger = new Logger('MikroORM');
+
     // const migrationsList = this.generateMigrationList();
     return {
       entities: ['dist/**/*.entity{.ts,.js}'],
