@@ -1,7 +1,7 @@
-import { EntityManager } from '@mikro-orm/mariadb';
+import { EntityManager } from '@mikro-orm/postgresql';
 import { Injectable } from '@nestjs/common';
-import { paginate, Paginated } from '../../common/paginate/paginate';
-import { PaginateQuery } from '../../common/paginate/paginate.decorator';
+import { paginate, Paginated } from '@common/paginate';
+import { PaginateQuery } from '@common/paginate';
 import { Machine } from './entities/machine.entity';
 import { CreateMachine, UpdateMachine } from './dto/create-machine.dto';
 import { wrap } from '@mikro-orm/core';

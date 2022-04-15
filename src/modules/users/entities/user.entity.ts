@@ -1,11 +1,4 @@
-import {
-  BeforeCreate,
-  Entity,
-  Enum,
-  ManyToOne,
-  PrimaryKey,
-  Property,
-} from '@mikro-orm/core';
+import { BeforeCreate, Entity, Enum, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
 import { Exclude } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
 import { Line } from '../../lines/entities/line.entity';

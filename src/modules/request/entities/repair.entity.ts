@@ -1,6 +1,6 @@
 import { Entity, OneToOne, PrimaryKey, Property } from '@mikro-orm/core';
-import { User } from '../../users/entities/user.entity';
-import { Request } from '../../request/entities/request.entity';
+import { User } from '@modules/users/entities/user.entity';
+import { Request } from '@modules/request/entities/request.entity';
 
 @Entity()
 export class Repair {

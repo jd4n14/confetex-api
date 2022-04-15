@@ -28,7 +28,7 @@ export class MikroOrmOptions implements MikroOrmOptionsFactory {
       debug: true,
       logger: logger.log.bind(logger),
       findOneOrFailHandler: (entityName, values) => {
-        throw new NotFoundException(`The resource you are loking in ${entityName} does not exist`);
+        throw new NotFoundException(`The resource you are looking in ${entityName} does not exist`);
       },
       discovery: {
         warnWhenNoEntities: false,

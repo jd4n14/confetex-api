@@ -1,4 +1,4 @@
-import { EntityRepository } from '@mikro-orm/mariadb';
+import { EntityRepository } from '@mikro-orm/postgresql';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import { Line } from './entities/line.entity';
@@ -20,7 +20,7 @@ export class LinesService {
 
   async create(): Promise<Line> {
     const line = this.lineRepository.create({});
-    this.lineRepository.persistAndFlush(line);
+    await this.lineRepository.persistAndFlush(line);
     return line;
   }
 

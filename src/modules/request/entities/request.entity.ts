@@ -1,7 +1,7 @@
 import { Entity, ManyToOne, OneToOne, PrimaryKey, Property } from '@mikro-orm/core';
-import { User } from '../../users/entities/user.entity';
-import { Log } from '../../log/entities/log.entity';
-import { Machine } from '../../machine/entities/machine.entity';
+import { User } from '@modules/users/entities/user.entity';
+import { Log } from '@modules/log/entities/log.entity';
+import { Machine } from '@modules/machine/entities/machine.entity';
 
 @Entity()
 export class Request {
@@ -16,7 +16,7 @@ export class Request {
 
   @Property()
   details: string;
-  
+
   @Property()
   module: string;
 

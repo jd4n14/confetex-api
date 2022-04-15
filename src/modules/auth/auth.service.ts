@@ -1,4 +1,3 @@
-import { UseRequestContext } from '@mikro-orm/core';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';

@@ -1,12 +1,6 @@
-import {
-  Entity,
-  ManyToOne,
-  OneToOne,
-  PrimaryKey,
-  Property,
-} from '@mikro-orm/core';
-import { Line } from '../../lines/entities/line.entity';
-import { User } from '../../users/entities/user.entity';
+import { Entity, ManyToOne, OneToOne, PrimaryKey, Property } from '@mikro-orm/core';
+import { Line } from '@modules/lines/entities/line.entity';
+import { User } from '@modules/users/entities/user.entity';
 
 @Entity()
 export class Log {
@@ -21,6 +15,6 @@ export class Log {
 
   @Property({ persist: false })
   name() {
-    return `Bitacora ${this.id}`;
+    return `Log ${this.id}`;
   }
 }

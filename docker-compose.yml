@@ -1,0 +1,9 @@
+version: '3.3'
+services:
+  run:
+    container_name: contefex
+    environment:
+      - POSTGRES_PASSWORD=1234
+    image: postgres:alpine3.15
+    expose:
+      - "5432:5432"

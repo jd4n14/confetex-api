@@ -4,7 +4,6 @@ import { ApiTags } from '@nestjs/swagger';
 import { User } from '../users/entities/user.entity';
 import { AuthService } from './auth.service';
 import { Login } from './dto/login.dto';
-import { RegisterUser } from './dto/register.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -21,8 +20,8 @@ export class AuthController {
 
   /**
    * Return the logged in user
-   * @param req 
-   * @returns 
+   * @param req
+   * @returns
    */
   @Get('whoami')
   @UseGuards(AuthGuard('jwt'))

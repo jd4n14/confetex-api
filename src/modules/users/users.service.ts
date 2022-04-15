@@ -1,4 +1,4 @@
-import { EntityManager } from '@mikro-orm/mariadb';
+import { EntityManager } from '@mikro-orm/postgresql';
 import { Injectable } from '@nestjs/common';
 import { RegisterUser } from '../auth/dto/register.dto';
 import { Role, User } from './entities/user.entity';
